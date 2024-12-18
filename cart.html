@@ -1,0 +1,328 @@
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description" content="Découvrez les meilleures offres en ligne pour des produits électroniques tels que Raspberry Pi, Arduino, et accessoires. Livraison rapide prtout au Maroc." />
+    <meta name="keywords" content="Raspberry Pi, Arduino, composants électroniques, accessoires, câbles, matériel informatique, acheter en ligne, livraison rapide, produits électroniques" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="SOF-TECH - Composants électroniques et accessoires" />
+    <meta property="og:description" content="SOF-TECH propose une large gamme de produits électroniques et accessoires pour vos projets Raspberry Pi et Arduino. Profitez de la livraison rapide partout au Maroc." />
+    <meta property="og:image" link rel="icon" href="raspberry_pi-logo-open_source-raspberry-512-2795733357.png" />
+    <meta property="og:url" content="https://www.sof-tech.com" />
+    <meta name="author" content="SOF-TECH" />
+    <title>SOF-TECH - Composants électroniques, Raspberry Pi et Arduino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            color: #333;
+        }
+
+        header {
+            background-color: #1a1a1a;
+        }
+        /* Direction RTL pour le texte en arabe */
+        body.rtl {
+            direction: rtl; /* Met la direction de droite à gauche */
+            text-align: right; /* Aligne le texte à droite */
+        }
+        
+        /* Style pour les éléments RTL */
+        body.rtl button,
+        body.rtl a {
+            text-align: right; /* Aligner les boutons ou liens */
+        }
+        
+        /* Correction des marges et paddings en RTL */
+        body.rtl .container {
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        .fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-black text-white py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <div class="flex items-center space-x-2 transition-all duration-300" id="logoContainer">
+                <img src="raspberry_pi-logo-open_source-raspberry-512-2795733357.png" alt="Raspberry Pi Logo" class="h-8 w-auto" />
+                <a href="index.html"><span class="text-lg font-bold">SOF-TECH</span></a>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="setLanguage('fr')" class="bg-blue-500 text-white py-1 px-2 rounded">FR</button>
+                <button onclick="setLanguage('ar')" class="bg-green-500 text-white py-1 px-2 rounded">AR</button>
+            </div>
+        </div>
+    </header>
+    
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white p-4 rounded shadow-md">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-2" id="productText">Produit</th>
+                        <th class="py-2" id="priceText">Prix</th>
+                        <th class="py-2" id="quantityText">Quantité</th>
+                        <th class="py-2" id="subtotalText">Sous-total</th>
+                    </tr>
+                </thead>
+                <tbody id="cartTable">
+                    <!-- Les produits seront ajoutés ici dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+        <div class="bg-white p-4 rounded shadow-md mt-4">
+            <div class="flex justify-between border-b py-2">
+                <span id="subTotalLabel">Sous-total</span>
+                <span id="subTotalAmount">0 DH</span>
+            </div>
+            <div class="flex justify-between border-b py-2">
+                <span id="deliveryFeeLabel">Frais de livraison</span>
+                <span id="deliveryFee">35 DH</span>
+            </div>
+            <div class="flex justify-between border-b py-2">
+                <span id="discountLabel">Réduction</span>
+                <span id="discountAmount">0 DH</span>
+            </div>
+            <div class="flex justify-between py-2 font-bold">
+                <span id="totalLabel">Total</span>
+                <span id="totalAmount">35 DH</span>
+            </div>
+            <input type="text" id="discountCode" placeholder="Code de réduction" class="mt-4 p-2 border rounded" aria-label="Code de réduction"/>
+            <button onclick="applyDiscount()" class="button mt-4 py-2 px-4 bg-blue-500 text-white rounded" id="applyButton">Appliquer</button>
+        </div>
+        <div class="form-container mt-4">
+            <h2>Informations de Livraison</h2>
+            <form id="orderForm" onsubmit="handleSubmit(event)">
+                <div class="mb-4">
+                    <label for="fullName" class="block text-sm font-medium text-gray-700">Nom complet :</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Ex: John Doe" required class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email :</label>
+                    <input type="email" id="email" name="email" placeholder="Ex: john.doe@example.com" required class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Numéro de téléphone :</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Ex: +212600123456" pattern="^(?:\+212|0)[6-7][0-9]{8}$" required class="w-full p-2 border rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="address" class="block text-sm font-medium text-gray-700">Adresse de livraison :</label>
+                    <input type="text" id="address" name="address" placeholder="Ex: 12 rue des Lilas" required class="w-full p-2 border rounded">
+                </div>
+                <button type="submit" class="w-full py-2 px-4 bg-green-500 text-white rounded">Envoyer et Commander via WhatsApp</button>
+            </form>
+        </div>
+    </div>
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p id="footer-text">&copy;2024 SOF-TECH. Tous droits réservés.</p>
+            <div class="mt-2">
+                <a href="https://www.facebook.com/garan.karam" class="text-yellow-500 mx-2" id="facebookText">Facebook </a>
+                <a href="https://www.instagram.com/soulaimanehajji/" class="text-yellow-500 mx-2" id="instagramText">Instagram</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        let discount = 0;
+        
+        function setLanguage(lang) {
+            document.documentElement.lang = lang;
+
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+        
+            const textElements = {
+                'main-heading': lang === 'fr' ? 'Produits' : 'المنتجات',
+                'footer-text': lang === 'fr' ? '© 2024 SOF-TECH. Tous droits réservés.' : '© 2024 SOF-TECH. جميع الحقوق محفوظة.',
+                'loadMoreButton': lang === 'fr' ? 'Plus' : 'المزيد',
+                'facebookText': lang === 'fr' ? 'Facebook' : 'فيسبوك',
+                'instagramText': lang === 'fr' ? 'Instagram' : 'إنستغرام',
+                'modal-message': lang === 'fr' ? 'Produit ajouté au panier.' : 'تم إضافة المنتج إلى السلة.',
+                'modal-close-btn': lang === 'fr' ? 'Fermer' : 'إغلاق',
+                'productText': lang === 'fr' ? 'Produit' : 'منتج',
+                'priceText': lang === 'fr' ? 'Prix' : 'السعر',
+                'quantityText': lang === 'fr' ? 'Quantité' : 'الكمية',
+                'subtotalText': lang === 'fr' ? 'Sous-total' : 'إجمالي',
+                'subTotalLabel': lang === 'fr' ? 'Sous-total' : 'إجمالي',
+                'deliveryFeeLabel': lang === 'fr' ? 'Frais de livraison' : 'رسوم الشحن',
+                'discountLabel': lang === 'fr' ? 'Réduction' : 'خصم',
+                'totalLabel': lang === 'fr' ? 'Total' : 'المجموع',
+                'footer-text':lang === 'fr' ?  '&copy; 2024 SOF-TECH. Tous droits réservés.' : '&copy; 2024 SOF-TECH. جميع الحقوق محفوظة.',
+                'facebookText': lang === 'fr' ? 'Facebook' : 'فيسبوك',
+                'instagramText': lang === 'fr' ? 'Instagram' : 'إنستجرام',
+                'Whatsapp': lang === 'fr' ? 'Commander Via Whatsapp' : 'طلب عبر الواتساب',
+                'applyButton': lang === 'fr' ? 'Appliquer':'تطبيق',
+                
+            };
+        
+            for (let [id, text] of Object.entries(textElements)) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = text; // Corrected this line
+                }
+            }
+            // Ajouter une classe spécifique pour RTL si nécessaire
+            if (lang === 'ar') {
+                document.body.classList.add('rtl');
+            } else {
+                document.body.classList.remove('rtl');
+            }
+
+        }
+        
+
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartTable = document.getElementById('cartTable');
+            let subTotal = 0;
+            let language = 'ar'; // Default language is Arabic
+
+            cartTable.innerHTML = ''; // Vider le contenu avant de recharger le panier
+
+            cart.forEach(function(product, index) {
+                let row = document.createElement('tr');
+                row.classList.add('border-b');
+                
+                row.innerHTML = `
+                    <td class="py-2 flex items-center">
+                        <button onclick="removeItem(${index})" class="text-gray-500 mr-4" aria-label="Supprimer l'article">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <span>${product.name}</span>
+                    </td>
+                    <td class="py-2 text-green-500">${product.price} DH</td>
+                    <td class="py-2">
+                        <div class="flex items-center">
+                            <button onclick="updateQuantity(${index}, -1)" class="px-2 py-1 border" aria-label="Diminuer la quantité">-</button>
+                            <input class="w-12 text-center border mx-2" type="text" value="${product.quantity}" readonly/>
+                            <button onclick="updateQuantity(${index}, 1)" class="px-2 py-1 border" aria-label="Augmenter la quantité">+</button>
+                        </div>
+                    </td>
+                    <td class="py-2 text-green-500">${(product.price * product.quantity)} DH</td>
+                `;
+                cartTable.appendChild(row);
+
+                subTotal += product.price * product.quantity;
+            });
+
+            const deliveryFee = 35;
+            const discountAmount = subTotal * discount * 0.01;
+            const total = subTotal + deliveryFee - discountAmount;
+
+            document.getElementById('subTotalAmount').innerText = subTotal + ' DH';
+            document.getElementById('deliveryFee').innerText = deliveryFee + ' DH';
+            document.getElementById('discountAmount').innerText = discountAmount + ' DH';
+            document.getElementById('totalAmount').innerText = total + ' DH';
+        }
+
+        function updateQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart[index].quantity += change;
+
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function applyDiscount() {
+            const discountCode = document.getElementById('discountCode').value;
+            if (discountCode === 'PROMO10') {
+                discount = 10;
+            } else if (discountCode === 'PROMO20') {
+                discount = 20;
+            } else {
+                discount = 0;
+                alert('Code de réduction invalide');
+            }
+            loadCart();
+        }
+       
+        function sendWhatsAppOrder() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let subTotal = 0;
+            let message = "Bonjour, je souhaite commander les produits suivants :\n\n";
+        
+            cart.forEach(product => {
+                const productTotal = product.price * product.quantity;
+                message += `- ${product.name} : ${product.price} DH x ${product.quantity} = ${productTotal} DH\n`;
+                subTotal += productTotal;
+            });
+        
+            const deliveryFee = 35;
+            const discountAmount = subTotal * discount * 0.01;
+            const total = subTotal + deliveryFee - discountAmount;
+        
+            message += `\nSous-total : ${subTotal} DH`;
+            message += `\nFrais de livraison : ${deliveryFee} DH`;
+            message += `\nRéduction (${discount}%) : ${discountAmount.toFixed(2)} DH`;
+            message += `\nTotal : ${total.toFixed(2)} DH`;
+        
+            const phoneNumber = "+212717707677";
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, "_blank");
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('orderForm');
+            const formData = new FormData(form);
+
+            // Save data to the database
+            fetch('save_data.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // Send WhatsApp message
+                sendWhatsAppOrder();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCart);
+    </script>
+</body>
+</html>
